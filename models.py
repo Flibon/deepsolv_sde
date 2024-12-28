@@ -15,8 +15,6 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     caption = db.Column(db.String(255))
     image_url = db.Column(db.String(255))
-    video_url = db.Column(db.String(255))
-    music_url = db.Column(db.String(255))
     category = db.Column(db.String(50))
     datetime_posted = db.Column(db.String(255), default=datetime.utcnow().isoformat)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
