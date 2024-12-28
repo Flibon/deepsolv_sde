@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feed - Instagram Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">Instagram Clone</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    {% if session['user_id'] %}
+                        <li class="nav-item"><a class="nav-link" href="/create_post">Create Post</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Feed Section -->
+    <div class="container mt-4">
+        <h2>Feed</h2>
+
+        <!-- Posts -->
+        {% for post in posts %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.caption }}</h5>
+                <p class="card-text">{{ post.category }} | {{ post.datetime_posted }}</p>
+                {% if post.image_url %}
+                    <img src="{{ post.image_url }}" class="img-fluid mb-2" alt="Post Image">
+                {% endif %}
+                <p><strong>Posted by:</strong> User {{ post.user_id }}</p>
+
+                <!-- Like Button -->
+                <form method="POST" action="/like/{{ post.id }}">
+                    <button type="submit" class="btn btn-outline-primary btn-sm">Like</button>
+                </form>
+
+                <!-- Comment Form -->
+                <form method="POST" action="/comment/{{ post.id }}" class="mt-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="text" placeholder="Add a comment..." required />
+                        <button type="submit" class="btn btn-primary">Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% if prev_url %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ prev_url }}">Previous</a>
+                </li>
+                {% endif %}
+                {% if next_url %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ next_url }}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>
